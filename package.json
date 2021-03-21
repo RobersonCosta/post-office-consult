@@ -1,0 +1,92 @@
+{
+  "name": "post-office-consult",
+  "version": "1.0.0",
+  "description": "Aplicação React-Isomorphic desenvolvida para consultar as funcionalidades dos Correios (Brasil)",
+  "main": "server.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "react-html-attrs",
+      "css-modules-transform",
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
+  },
+  "scripts": {
+    "start": "nodemon",
+    "heroku-postbuild": "cross-env NODE_ENV=production webpack --progress -p",
+    "dev": "concurrently \"webpack --w\" \"nodemon\" \"browser-sync start --proxy 'localhost:8081' --files 'src' --no-ui\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobersonCosta/post-office-consult.git"
+  },
+  "author": "Roberson Costa & Talita Pastorini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobersonCosta/post-office-consult/issues"
+  },
+  "homepage": "https://github.com/RobersonCosta/post-office-consult#readme",
+  "dependencies": {
+    "@types/jquery-mask-plugin": "^1.14.3",
+    "antd": "^4.8.5",
+    "axios": "^0.21.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "jquery-mask-plugin": "^1.14.16",
+    "nodemon": "^2.0.6",
+    "npm": "^7.6.3",
+    "path": "^0.12.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0",
+    "react-redux": "^7.2.2",
+    "react-redux-toastr": "^7.6.5",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.6",
+    "redux-multi": "^0.1.12",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.2.1",
+    "worker-loader": "^3.0.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-css-modules-transform": "^1.6.2",
+    "babel-plugin-react-html-attrs": "^3.0.4",
+    "browser-sync": "^2.26.13",
+    "clean-webpack-plugin": "^3.0.0",
+    "compression-webpack-plugin": "^4.0.0",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
+    "lodash": "^4.17.20",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "null-loader": "^4.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "sass-loader": "^8.0.2",
+    "terser-webpack-plugin": "^4.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-node-externals": "^2.5.0"
+  },
+  "engines": {
+    "node": "14.15.0",
+    "npm": ">=6.14.8"
+  },
+  "config": {
+    "unsafe-perm": true
+  }
+}
