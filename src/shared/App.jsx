@@ -1,6 +1,7 @@
 // CSS imports
 
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
+import 'antd/dist/antd.dark.css';
 
 import React, { useCallback } from 'react';
 import routes from '@web/config/routes';

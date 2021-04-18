@@ -32,6 +32,7 @@
   "dependencies": {
     "@types/jquery-mask-plugin": "^1.14.3",
     "antd": "^4.8.5",
+    "antd-mask-input": "^0.1.15",
     "axios": "^0.21.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
