@@ -6,7 +6,9 @@ const INITIAL_STATE = {
     postOfficeError: {
         status: false,
         message: ""
-    }
+    },
+    postOfficeAddress : {},
+    postOfficePrecoPrazo : []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -48,6 +50,17 @@ export default (state = INITIAL_STATE, action) => {
                     status: false,
                     message: ""
                 }
+            }
+        case 'GET_CURRENT_ZIP_CODE':
+            return {
+                ...state,
+                postOfficeAddress : action.payload
+            }
+
+        case 'FETCH_PRECO_PRAZO':
+            return {
+                ...state,
+                postOfficePrecoPrazo : action.payload
             }
 
         default:

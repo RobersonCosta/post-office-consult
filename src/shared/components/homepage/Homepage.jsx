@@ -5,7 +5,9 @@ import MaskedInput from 'antd-mask-input'
 
 import { FaAngleRight, FaAngleDown, FaInfoCircle } from 'react-icons/fa'
 import {
-    clearPostOfficeStatus
+    clearPostOfficeStatus,
+    getCurrentZipCode,
+    calculaPrecoPrazo
 } from '@web/redux/postOffice/actions';
 import { pushNotification, popNotification } from '@web/redux/notifications/actions';
 import notify from '@web/components/common/Notification';
@@ -84,7 +86,9 @@ const Homepage = () => {
     }
 
     const consultZipCode = (values) => {
-        console.log(values)
+        dispatch(
+            getCurrentZipCode(values.cep)
+        );
     }
 
     const orderTracking = (values) => {
@@ -94,6 +98,9 @@ const Homepage = () => {
 
     const fetchPrecoPrazo = (values) => {
         console.log(values)
+        dispatch(
+            calculaPrecoPrazo(values)
+        );
     }
 
 
@@ -177,7 +184,7 @@ const Homepage = () => {
                             </Form>
                         </div>
                     </Collapse.Panel>
-                    <Collapse.Panel header="Realizar o rastreio de encomenda" key="2">
+                    {/* <Collapse.Panel header="Realizar o rastreio de encomenda" key="2">
                         <div align="center">
                             <Form
                                 name="orderTracking"
@@ -195,7 +202,7 @@ const Homepage = () => {
                                 </Form.Item>
                             </Form>
                         </div>
-                    </Collapse.Panel>
+                    </Collapse.Panel> */}
                     <Collapse.Panel header="Calcular preço e prazo de determinada encomenda" key="3">
                         <div align="center">
                             <Form
@@ -268,37 +275,37 @@ const Homepage = () => {
                                         rules={[{ required: true, message: 'Por favor insira o peso estimado (kg)!' }]}
                                     >
                                         <Select required placeholder="Selecione o peso estimado (kg)">
-                                            <Option value="0.3">0.3 kg</Option>
-                                            <Option value="1">1 kg</Option>
-                                            <Option value="2">2 kg</Option>
-                                            <Option value="3">3 kg</Option>
-                                            <Option value="4">4 kg</Option>
-                                            <Option value="5">5 kg</Option>
-                                            <Option value="6">6 kg</Option>
-                                            <Option value="7">7 kg</Option>
-                                            <Option value="8">8 kg</Option>
-                                            <Option value="9">9 kg</Option>
-                                            <Option value="10">10 kg</Option>
-                                            <Option value="11">11 kg</Option>
-                                            <Option value="12">12 kg</Option>
-                                            <Option value="13">13 kg</Option>
-                                            <Option value="14">14 kg</Option>
-                                            <Option value="15">15 kg</Option>
-                                            <Option value="16">16 kg</Option>
-                                            <Option value="17">17 kg</Option>
-                                            <Option value="18">18 kg</Option>
-                                            <Option value="19">19 kg</Option>
-                                            <Option value="20">20 kg</Option>
-                                            <Option value="21">21 kg</Option>
-                                            <Option value="22">22 kg</Option>
-                                            <Option value="23">23 kg</Option>
-                                            <Option value="24">24 kg</Option>
-                                            <Option value="25">25 kg</Option>
-                                            <Option value="26">26 kg</Option>
-                                            <Option value="27">27 kg</Option>
-                                            <Option value="28">28 kg</Option>
-                                            <Option value="29">29 kg</Option>
-                                            <Option value="30">30 kg</Option>
+                                            <Select.Option value="0.3" key='0.3'>0.3 kg</Select.Option>
+                                            <Select.Option value="1" key="1">1 kg</Select.Option>
+                                            <Select.Option value="2" key="2">2 kg</Select.Option>
+                                            <Select.Option value="3" key="3">3 kg</Select.Option>
+                                            <Select.Option value="4" key="4">4 kg</Select.Option>
+                                            <Select.Option value="5" key="5">5 kg</Select.Option>
+                                            <Select.Option value="6" key="6">6 kg</Select.Option>
+                                            <Select.Option value="7" key="7">7 kg</Select.Option>
+                                            <Select.Option value="8" key="8">8 kg</Select.Option>
+                                            <Select.Option value="9" key="9">9 kg</Select.Option>
+                                            <Select.Option value="10" key="10">10 kg</Select.Option>
+                                            <Select.Option value="11" key="11">11 kg</Select.Option>
+                                            <Select.Option value="12" key="12">12 kg</Select.Option>
+                                            <Select.Option value="13" key="13">13 kg</Select.Option>
+                                            <Select.Option value="14" key="14">14 kg</Select.Option>
+                                            <Select.Option value="15" key="15">15 kg</Select.Option>
+                                            <Select.Option value="16" key="16">16 kg</Select.Option>
+                                            <Select.Option value="17" key="17">17 kg</Select.Option>
+                                            <Select.Option value="18" key="18">18 kg</Select.Option>
+                                            <Select.Option value="19" key="19">19 kg</Select.Option>
+                                            <Select.Option value="20" key="20">20 kg</Select.Option>
+                                            <Select.Option value="21" key="21">21 kg</Select.Option>
+                                            <Select.Option value="22" key="22">22 kg</Select.Option>
+                                            <Select.Option value="23" key="23">23 kg</Select.Option>
+                                            <Select.Option value="24" key="24">24 kg</Select.Option>
+                                            <Select.Option value="25" key="25">25 kg</Select.Option>
+                                            <Select.Option value="26" key="26">26 kg</Select.Option>
+                                            <Select.Option value="27" key="27">27 kg</Select.Option>
+                                            <Select.Option value="28" key="28">28 kg</Select.Option>
+                                            <Select.Option value="29" key="29">29 kg</Select.Option>
+                                            <Select.Option value="30" key="30">30 kg</Select.Option>
                                         </Select>
                                     </Form.Item>
                                     <Form.Item
@@ -311,9 +318,9 @@ const Homepage = () => {
                                         rules={[{ required: true, message: 'Por favor insira o formato!' }]}
                                     >
                                         <Select required placeholder="Selecione o formato">
-                                            <Option value="1">Formato caixa/pacote</Option>
-                                            <Option value="2">Formato rolo/prisma</Option>
-                                            <Option value="3">Envelope</Option>
+                                            <Select.Option value="1" key='1'>Formato caixa/pacote</Select.Option>
+                                            <Select.Option value="2" key='2'>Formato rolo/prisma</Select.Option>
+                                            <Select.Option value="3" key='3'>Envelope</Select.Option>
                                         </Select>
                                     </Form.Item>
                                 </>
@@ -333,9 +340,9 @@ const Homepage = () => {
                         <Button key="submit" type="primary" onClick={() => setParcelOptionsModal(false)}>Ok</Button>
                     ]}
                 >
-                    {parcelOptions.map(option => {
+                    {parcelOptions.map((option, index) => {
                         return (
-                            <div style={{ margin: "5px", border: "1px dashed", backgroundColor: "white", color: "black" }} align="center">
+                            <div style={{ margin: "5px", border: "1px dashed", backgroundColor: "white", color: "black" }} align="center" key={index}>
                                 <div style={{ display: "inline-block" }}>
                                     <img src={option.url} style={{ width: "auto", maxHeight: "120px" }} />
                                 </div>
