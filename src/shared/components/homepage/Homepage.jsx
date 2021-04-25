@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spin, Modal, Tooltip, Collapse, Form, Input, InputNumber, Select, Button, Checkparcel } from 'antd';
 import MaskedInput from 'antd-mask-input'
+import path from 'path';
 
 import { FaAngleRight, FaAngleDown, FaInfoCircle } from 'react-icons/fa'
 import {
@@ -161,6 +162,11 @@ const Homepage = () => {
     return (
         <>
             <Container>
+                <img
+                    className="banner"
+                    src={path.join(__dirname, './images/post-office-banner.png')}
+                    alt="Post Office Banner - Roberson & Talita"
+                />
                 <Collapse
                     defaultActiveKey={['1']}
                     expandIcon={({ isActive }) => isActive ? <FaAngleDown /> : <FaAngleRight />}
