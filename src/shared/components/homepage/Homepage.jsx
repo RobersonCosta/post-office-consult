@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spin, Modal, Collapse, Form, Input, InputNumber, Select, Button, Checkparcel } from 'antd';
+import { Spin, Modal, Tooltip, Collapse, Form, Input, InputNumber, Select, Button, Checkparcel } from 'antd';
 import MaskedInput from 'antd-mask-input'
 
 import { FaAngleRight, FaAngleDown, FaInfoCircle } from 'react-icons/fa'
 import {
     clearPostOfficeStatus,
     getCurrentZipCode,
-    calculaPrecoPrazo
+    hidePostOfficeAddress,
+    calculaPrecoPrazo,
+    hidePostOfficePrecoPrazo
 } from '@web/redux/postOffice/actions';
 import { pushNotification, popNotification } from '@web/redux/notifications/actions';
 import notify from '@web/components/common/Notification';
@@ -25,7 +27,11 @@ const Homepage = () => {
 
     const {
         postOfficeError,
-        postOfficeSuccess
+        postOfficeSuccess,
+        showPostOfficeAddress,
+        postOfficeAddress,
+        showPostOfficePrecoPrazo,
+        postOfficePrecoPrazo
     } = useSelector(state => state.PostOffice);
 
     const showNotification = useCallback((notification) => {
@@ -90,11 +96,6 @@ const Homepage = () => {
             getCurrentZipCode(values.cep)
         );
     }
-
-    const orderTracking = (values) => {
-        console.log(values)
-    }
-
 
     const fetchPrecoPrazo = (values) => {
         console.log(values)
@@ -184,25 +185,6 @@ const Homepage = () => {
                             </Form>
                         </div>
                     </Collapse.Panel>
-                    {/* <Collapse.Panel header="Realizar o rastreio de encomenda" key="2">
-                        <div align="center">
-                            <Form
-                                name="orderTracking"
-                                onFinish={orderTracking}
-                            >
-                                <Form.Item
-                                    label="Código de rastreio"
-                                    name="trackingCode"
-                                    rules={[{ required: true, message: 'Por favor insira o código de rastreio!' }]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item >
-                                    <Button type="primary" htmlType="submit">Rastrear encomenda</Button>
-                                </Form.Item>
-                            </Form>
-                        </div>
-                    </Collapse.Panel> */}
                     <Collapse.Panel header="Calcular preço e prazo de determinada encomenda" key="3">
                         <div align="center">
                             <Form
@@ -354,6 +336,146 @@ const Homepage = () => {
                             </div>
                         )
                     })}
+                </Modal>
+                <Modal
+                    visible={showPostOfficeAddress}
+                    title="Resultado da consulta de CEP"
+                    onCancel={() => dispatch(hidePostOfficeAddress())}
+                    footer={[
+                        <Button key="back" onClick={() => dispatch(hidePostOfficeAddress())}>Voltar</Button>,
+                        <Button key="submit" type="primary" onClick={() => dispatch(hidePostOfficeAddress())}>Ok</Button>
+                    ]}
+                >
+                    <div style={{ margin: "5px" }} align="center">
+                        <div style={{ padding: "5px" }} align="left">
+                            <span style={postOfficeAddress.cep ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>CEP: </b>{postOfficeAddress.cep}
+                            </span>
+                            <span style={postOfficeAddress.logradouro ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>Logradouro: </b>{postOfficeAddress.logradouro}
+                            </span>
+                            <span style={postOfficeAddress.complemento ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>Complemento: </b>{postOfficeAddress.complemento}
+                            </span>
+                            <span style={postOfficeAddress.bairro ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>Bairro: </b>{postOfficeAddress.bairro}
+                            </span>
+                            <span style={postOfficeAddress.localidade ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>Localidade: </b>{postOfficeAddress.localidade}
+                            </span>
+                            <span style={postOfficeAddress.uf ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>UF: </b>{postOfficeAddress.uf}
+                            </span>
+                            <hr />
+                            <span style={postOfficeAddress.ddd ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>DDD <Tooltip title="DDD significa Discagem Direta à Distância. É um sistema de ligação telefônica automática entre diferentes áreas urbanas nacionais." >
+                                    <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                </Tooltip>:</b> {postOfficeAddress.ddd}
+                            </span>
+                            <span style={postOfficeAddress.gia ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>GIA <Tooltip title="A Guia de Informação e Apuração do ICMS, ou apenas GIA, é uma declaração acessória obrigatória em alguns estados brasileiros e que contém a apresentação das informações sobre os valores apurados do ICMS pelas empresas, mensalmente." >
+                                    <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                </Tooltip>:</b> {postOfficeAddress.gia}
+                            </span>
+                            <span style={postOfficeAddress.ibge ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>IBGE <Tooltip title="O campo que representa o código do IBGE da cidade, é muito utilizado em sistemas de automação comercial na hora de emitir uma Nota Fiscal Eletrônica (NF-e), situação em que você precisa informar o código da cidade além de sua descrição." >
+                                    <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                </Tooltip>:</b> {postOfficeAddress.ibge}
+                            </span>
+                            <span style={postOfficeAddress.siafi ? { display: "block" } : { display: "block", color: "#545454" }}>
+                                <b>SIAFI <Tooltip title="SIAFI é um sistema contábil que tem por finalidade realizar todo o processamento, controle e execução financeira, patrimonial e contábil do governo federal brasileiro." >
+                                    <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                </Tooltip>:</b> {postOfficeAddress.siafi}
+                            </span>
+                        </div>
+                    </div>
+                </Modal>
+                <Modal
+                    visible={showPostOfficePrecoPrazo}
+                    title="Resultado do calculo de prazo e preço"
+                    onCancel={() => dispatch(hidePostOfficePrecoPrazo())}
+                    footer={[
+                        <Button key="back" onClick={() => dispatch(hidePostOfficePrecoPrazo())}>Voltar</Button>,
+                        <Button key="submit" type="primary" onClick={() => dispatch(hidePostOfficePrecoPrazo())}>Ok</Button>
+                    ]}
+                >
+                    <div style={{ margin: "5px" }} align="center">
+                        {postOfficePrecoPrazo.length == 2 ?
+                            <div style={{ padding: "5px" }} align="left">
+                                <h2>Sedex</h2>
+                                <span style={{ display: "block" }}>
+                                    <b>Entrega domiciliar: </b>{postOfficePrecoPrazo[0].EntregaDomiciliar == "S" ? "Sim" : "Não"}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Entrega nos sábados: </b>{postOfficePrecoPrazo[0].EntregaSabado == "S" ? "Sim" : "Não"}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Prazo da entrega: </b>em até {postOfficePrecoPrazo[0].PrazoEntrega} dia(s)
+                            </span>
+                                <br />
+                                <span style={{ display: "block", color: "green" }}>
+                                    <b>Valor: </b>R$ {postOfficePrecoPrazo[0].Valor}
+                                </span>
+                                <br />
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Aviso Recebimento <Tooltip title="Preço do serviço adicional Aviso de Recebimento. Físico: o cliente (remetente) recebe a comprovação da assinatura de quem recebeu o objeto através de formulário específico; Digital: o cliente recebe a imagem digitalizada do formulário de AR com os dados de entrega do objeto postado sob registro." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[0].ValorAvisoRecebimento}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Valor Declarado <Tooltip title="Preço do serviço adicional Valor Declarado. Você garante que o valor do seu objeto registrado seja indenizado no montante declarado em caso eventual de avaria ou extravio, proporcional ao dano (parcial ou total) do conteúdo." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[0].ValorDeclarado}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Mão Própria <Tooltip title="Preço do serviço adicional Mão Própria. O objeto somente será entregue ao destinatário indicado no endereçamento do objeto, seguindo os mesmos procedimentos de dispensa de assinatura do destinatário e com o preenchimento dos dados devidos pelo carteiro." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[0].ValorMaoPropria}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor sem adicionais: </b>R$ {postOfficePrecoPrazo[0].ValorSemAdicionais}
+                                </span>
+                                <br />
+
+                                <hr />
+
+                                <br />
+                                <h2>PAC</h2>
+                                <span style={{ display: "block" }}>
+                                    <b>Entrega domiciliar: </b>{postOfficePrecoPrazo[1].EntregaDomiciliar == "S" ? "Sim" : "Não"}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Entrega nos sábados: </b>{postOfficePrecoPrazo[1].EntregaSabado == "S" ? "Sim" : "Não"}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Prazo da entrega: </b>em até {postOfficePrecoPrazo[1].PrazoEntrega} dia(s)
+                            </span>
+                                <br />
+                                <span style={{ display: "block", color: "green" }}>
+                                    <b>Valor: </b>R$ {postOfficePrecoPrazo[1].Valor}
+                                </span>
+                                <br />
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Aviso Recebimento <Tooltip title="Preço do serviço adicional Aviso de Recebimento. Físico: o cliente (remetente) recebe a comprovação da assinatura de quem recebeu o objeto através de formulário específico; Digital: o cliente recebe a imagem digitalizada do formulário de AR com os dados de entrega do objeto postado sob registro." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[1].ValorAvisoRecebimento}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Valor Declarado <Tooltip title="Preço do serviço adicional Valor Declarado. Você garante que o valor do seu objeto registrado seja indenizado no montante declarado em caso eventual de avaria ou extravio, proporcional ao dano (parcial ou total) do conteúdo." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[1].ValorDeclarado}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor adicional: Mão Própria <Tooltip title="Preço do serviço adicional Mão Própria. O objeto somente será entregue ao destinatário indicado no endereçamento do objeto, seguindo os mesmos procedimentos de dispensa de assinatura do destinatário e com o preenchimento dos dados devidos pelo carteiro." >
+                                        <FaInfoCircle style={{ color: "gray", fontSize: '0.8em' }} />
+                                    </Tooltip>:</b> R$ {postOfficePrecoPrazo[1].ValorMaoPropria}
+                                </span>
+                                <span style={{ display: "block" }}>
+                                    <b>Valor sem adicionais: </b>R$ {postOfficePrecoPrazo[1].ValorSemAdicionais}
+                                </span>
+                            </div>
+                            : ''}
+                    </div>
                 </Modal>
             </Container>
         </>

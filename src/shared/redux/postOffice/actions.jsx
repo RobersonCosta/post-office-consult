@@ -10,6 +10,7 @@ export function clearPostOfficeStatus() {
     }
 }
 
+
 export function getCurrentZipCode(cep) {
     return dispatch => {
         axios.get(`${globals.API_URL}/postoffice/consultZipCode/${cep}`)
@@ -26,6 +27,15 @@ export function getCurrentZipCode(cep) {
             })
     }
 }
+
+export function hidePostOfficeAddress() {
+    return dispatch => {
+        dispatch({
+            type: "HIDE_POST_OFFICE_ADDRESS"
+        })
+    }
+}
+
 export function calculaPrecoPrazo(values) {
     return dispatch => {
         axios.post(`${globals.API_URL}/postoffice/fetchPrecoPrazo/`, values)
@@ -44,7 +54,13 @@ export function calculaPrecoPrazo(values) {
     }
 }
 
-
+export function hidePostOfficePrecoPrazo() {
+    return dispatch => {
+        dispatch({
+            type: "HIDE_POST_PRECO_PRAZO"
+        })
+    }
+}
 
 function reportError(message) {
     return dispatch => {

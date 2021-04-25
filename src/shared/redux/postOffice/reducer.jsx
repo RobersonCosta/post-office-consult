@@ -7,8 +7,10 @@ const INITIAL_STATE = {
         status: false,
         message: ""
     },
-    postOfficeAddress : {},
-    postOfficePrecoPrazo : []
+    showPostOfficeAddress: false,
+    postOfficeAddress: {},
+    showPostOfficePrecoPrazo: false,
+    postOfficePrecoPrazo: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -54,13 +56,30 @@ export default (state = INITIAL_STATE, action) => {
         case 'GET_CURRENT_ZIP_CODE':
             return {
                 ...state,
-                postOfficeAddress : action.payload
+                showPostOfficeAddress: true,
+                postOfficeAddress: action.payload,
+            }
+
+        case 'HIDE_POST_OFFICE_ADDRESS':
+            console.log("SÓ ME DIZ SE EU VIM PRA CA")
+            return {
+                ...state,
+                showPostOfficeAddress: false,
+                postOfficeAddress: {},
             }
 
         case 'FETCH_PRECO_PRAZO':
             return {
                 ...state,
-                postOfficePrecoPrazo : action.payload
+                showPostOfficePrecoPrazo: true,
+                postOfficePrecoPrazo: action.payload
+            }
+
+        case 'HIDE_POST_PRECO_PRAZO':
+            return {
+                ...state,
+                showPostOfficePrecoPrazo: false,
+                postOfficePrecoPrazo: [],
             }
 
         default:
